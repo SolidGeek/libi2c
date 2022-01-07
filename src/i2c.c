@@ -118,7 +118,7 @@ ssize_t i2c_ioctl_read(const I2CDevice *device, unsigned int iaddr, void *buf, s
         /* Second message is read data */
         ioctl_msg[1].len	= 	len;
         ioctl_msg[1].addr	= 	device->addr;
-        ioctl_msg[1].buf	=	buf;
+        ioctl_msg[1].buf	=	(unsigned char*)buf;
         ioctl_msg[1].flags	=	flags | I2C_M_RD;
 
         /* Package to i2c message to operation i2c device */
@@ -131,7 +131,7 @@ ssize_t i2c_ioctl_read(const I2CDevice *device, unsigned int iaddr, void *buf, s
         /* Direct send read data message */
         ioctl_msg[0].len	= 	len;
         ioctl_msg[0].addr	= 	device->addr;
-        ioctl_msg[0].buf	=	buf;
+        ioctl_msg[0].buf	=	(unsigned char*)buf;
         ioctl_msg[0].flags	=	flags | I2C_M_RD;
 
         /* Package to i2c message to operation i2c device */
@@ -154,7 +154,7 @@ ssize_t i2c_ioctl_write(const I2CDevice *device, unsigned int iaddr, const void 
 {
     ssize_t remain = len;
     size_t size = 0, cnt = 0;
-    const unsigned char *buffer = buf;
+    const unsigned char *buffer = (unsigned char*)buf;
     unsigned char delay = GET_I2C_DELAY(device->delay);
     unsigned short flags = GET_I2C_FLAGS(device->tenbit, device->flags);
 
@@ -262,7 +262,7 @@ ssize_t i2c_write(const I2CDevice *device, unsigned int iaddr, const void *buf, 
     ssize_t remain = len;
     ssize_t ret;
     size_t cnt = 0, size = 0;
-    const unsigned char *buffer = buf;
+    const unsigned char *buffer = (unsigned char*)buf;
     unsigned char delay = GET_I2C_DELAY(device->delay);
     unsigned char tmp_buf[PAGE_MAX_BYTES + INT_ADDR_MAX_BYTES];
 
